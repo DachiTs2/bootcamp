@@ -1,3 +1,7 @@
 <template>
-  <p class="text-red-500 text-2xl">Hello World</p>
+  <Navbar />
 </template>
+
+<script setup>
+import Navbar from "./components/Navbar.vue";
+</script>
