@@ -1,6 +1,7 @@
 <template>
   <Navbar />
   <Hero />
+  <Categories />
 </template>
 
 <script setup>
@@ -8,6 +9,7 @@ import { onBeforeMount } from "vue";
 import Hero from "./components/Hero.vue";
 import Navbar from "./components/Navbar.vue";
 import axios from "./helpers/axios";
+import Categories from "./components/Categories.vue";
 onBeforeMount(async () => {
   const { data } = await axios.get("/token");
   const token = JSON.parse(localStorage.getItem("token"));
