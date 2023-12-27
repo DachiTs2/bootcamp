@@ -10,22 +10,28 @@
         class="w-full h-full object-cover object-center"
       />
     </div>
-    <p class="text-black mt-6 font-medium">დაჩი წიწილაშვილი</p>
-    <p class="text-[#85858D] text-xs mt-2">19.12.2023</p>
+    <p class="text-black mt-6 font-medium">{{ blog?.author }}</p>
+    <p class="text-[#85858D] text-xs mt-2">{{ blog?.publish_date }}</p>
     <p class="text-black text-xl mt-4 font-medium">
-      EOMM-ის მრჩეველთა საბჭოს ნინო ეგაძე შეუერთდა
+      {{ blog?.title }}
     </p>
     <div class="w-full h-7 space-x-4 flex justify-start items-center mt-4">
       <div
+        v-for="category in blog?.categories"
+        :key="category.id"
         class="w-auto px-2.5 py-1.5 bg-yellow-500/30 text-yellow-500 flex justify-center items-center rounded-3xl font-medium"
       >
-        კატეგორია
+        {{ category?.title }}
       </div>
     </div>
     <p class="text-[#404049] mt-4">
-      6 თვის შემდეგ ყველის ბრმა დეგუსტაციის დროც დადგა. მაქსიმალური
-      სიზუსტისთვის, ეს პროცესი...
+      {{ blog?.description }}
     </p>
     <p class="text-[#5D37F3] text-sm mt-4 font-medium">სრულად ნახვა</p>
   </router-link>
 </template>
+<script setup>
+const props = defineProps(["blog"]);
+
+console.log(props.blog);
+</script>

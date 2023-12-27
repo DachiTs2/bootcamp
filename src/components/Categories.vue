@@ -6,8 +6,7 @@
       <button
         class="w-auto h-full px-4 inline-block rounded-3xl duration-150"
         :class="activeCategory === category.id && 'border border-black'"
-        :style="`background-color: ${category.background_color}40; color: ${category.text_color};`"
-        v-for="category in categories"
+        :style="`background-color: ${category.background_color}80; color: ${category.text_color};`"
         :key="category.id"
         @click="activeCategory = category.id"
       >
