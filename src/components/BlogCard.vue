@@ -1,6 +1,6 @@
 <template>
   <router-link
-    to="blog/1"
+    :to="`blog/${blog?.id}`"
     class="col-span-1 h-[620px] rounded-xl overflow-hidden flex flex-col justify-start items-start"
   >
     <div class="w-full h-80 rounded-xl">

@@ -8,5 +8,6 @@
 
 <script setup>
 import BlogCard from "./BlogCard.vue";
+
 defineProps(["blogs"]);
 </script>

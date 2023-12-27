@@ -28,59 +28,27 @@
             class="w-full h-full object-cover object-center"
           />
         </div>
-        <p class="text-base text-black font-medium mt-5">დაჩი წიწილაშვილი</p>
+        <p class="text-base text-black font-medium mt-5">{{ blog?.author }}</p>
         <p class="text-xs text-[#85858D] font-medium mt-2">
-          19.12.2023 * dtsitsilashvili@gmail.com
+          {{ blog?.publish_date }} * {{ blog?.email }}
         </p>
         <p class="text-black text-[32px] font-bold mt-6">
-          მობილური ფოტოგრაფიის კონკურსის გამარჯვებულთა ვინაობა ცნობილია
+          {{ blog?.title }}
         </p>
         <div
           class="w-full h-auto space-x-4 flex justify-start items-center mt-5"
         >
           <div
+            v-for="category in blog?.categories"
+            :key="category.id"
             class="w-auto h-full rounded-3xl px-2.5 py-1.5 bg-yellow-500/30 text-yellow-600 flex justify-center items-center text-sm"
+            :style="`background-color: ${category.background_color}80; color: ${category.text_color}`"
           >
-            მარკეტი
-          </div>
-          <div
-            class="w-auto h-full rounded-3xl px-2.5 py-1.5 bg-yellow-500/30 text-yellow-600 flex justify-center items-center text-sm"
-          >
-            მარკეტი
-          </div>
-          <div
-            class="w-auto h-full rounded-3xl px-2.5 py-1.5 bg-yellow-500/30 text-yellow-600 flex justify-center items-center text-sm"
-          >
-            მარკეტი
+            {{ category.title }}
           </div>
         </div>
         <p class="text-black mt-10">
-          6 თვის შემდეგ ყველის ბრმა დეგუსტაციის დროც დადგა. მაქსიმალური
-          სიზუსტისთვის, ეს პროცესი ორჯერ გაიმეორეს და ორივეჯერ იმ ყველს მიენიჭა
-          უპირატესობა, რომელსაც ჰიპ-ჰოპს ასმენინებდნენ. „მუსიკალური ენერგია
-          პირდაპირ ყველის შუაგულში რეზონირებდა“, — აღნიშნა ბერნის ხელოვნების
-          უნივერსიტეტის წარმომადგენელმა, მაიკლ ჰერენბერგმა. რა თქმა უნდა, ეს
-          ერთი კვლევა საკმარისი არ არის საბოლოო დასკვნების გამოსატანად.
-          სანაცვლოდ, მეცნიერებს სურთ, უშუალოდ ჰიპ-ჰოპის ჟანრის სხვადასხვა მუსიკა
-          მოასმენინონ რამდენიმე ყველს და უკვე ისინი შეაჯიბრონ ერთმანეთს. აქვე
-          საგულისხმოა, რომ როგორც ბერნის მეცნიერები განმარტავენ, ექსპერიმენტს
-          საფუძვლად არა ყველის გაუმჯობესებული წარმოება, არამედ კულტურული
-          საკითხები დაედო. მათი თქმით, ადამიანებს უყვართ ყველი და მუსიკა,
-          ამიტომაც საინტერესოა ამ ორის კავშირის დანახვა.
-        </p>
-        <p class="text-black mt-10">
-          6 თვის შემდეგ ყველის ბრმა დეგუსტაციის დროც დადგა. მაქსიმალური
-          სიზუსტისთვის, ეს პროცესი ორჯერ გაიმეორეს და ორივეჯერ იმ ყველს მიენიჭა
-          უპირატესობა, რომელსაც ჰიპ-ჰოპს ასმენინებდნენ. „მუსიკალური ენერგია
-          პირდაპირ ყველის შუაგულში რეზონირებდა“, — აღნიშნა ბერნის ხელოვნების
-          უნივერსიტეტის წარმომადგენელმა, მაიკლ ჰერენბერგმა. რა თქმა უნდა, ეს
-          ერთი კვლევა საკმარისი არ არის საბოლოო დასკვნების გამოსატანად.
-          სანაცვლოდ, მეცნიერებს სურთ, უშუალოდ ჰიპ-ჰოპის ჟანრის სხვადასხვა მუსიკა
-          მოასმენინონ რამდენიმე ყველს და უკვე ისინი შეაჯიბრონ ერთმანეთს. აქვე
-          საგულისხმოა, რომ როგორც ბერნის მეცნიერები განმარტავენ, ექსპერიმენტს
-          საფუძვლად არა ყველის გაუმჯობესებული წარმოება, არამედ კულტურული
-          საკითხები დაედო. მათი თქმით, ადამიანებს უყვართ ყველი და მუსიკა,
-          ამიტომაც საინტერესოა ამ ორის კავშირის დანახვა.
+          {{ blog?.description }}
         </p>
       </div>
       <div
@@ -159,9 +127,20 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
 import BlogCard from "../components/BlogCard.vue";
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
+import { useRoute } from "vue-router";
+import axios from "../helpers/axios";
 const isLastSlide = ref(false);
 const isFirstSlide = ref(true);
+
+const route = useRoute();
+const blog = ref();
+
+onBeforeMount(async () => {
+  const { data } = await axios.get(`/blogs/${route.params.id}`);
+  blog.value = data;
+});
+
 const settings = {
   slidesPerView: 3,
   spaceBetween: 32,

@@ -8,6 +8,7 @@
         :class="activeCategory === category.id && 'border border-black'"
         :style="`background-color: ${category.background_color}80; color: ${category.text_color};`"
         :key="category.id"
+        v-for="category in categories"
         @click="activeCategory = category.id"
       >
         {{ category.title }}
