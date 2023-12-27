@@ -27,6 +27,5 @@
       სიზუსტისთვის, ეს პროცესი...
     </p>
     <p class="text-[#5D37F3] text-sm mt-4 font-medium">სრულად ნახვა</p>
-  </div>
   </router-link>
 </template>
