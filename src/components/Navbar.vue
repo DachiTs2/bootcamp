@@ -2,13 +2,13 @@
   <LoginModal @close="loginModal = false" v-if="loginModal" />
   <div class="w-full h-20 bg-white flex justify-center items-center">
     <div class="w-5/6 h-full flex justify-between items-center">
-      <div class="w-[150px] h-[24px]">
+      <RouterLink to="/" class="w-[150px] h-[24px]">
         <img
           src="../assets/Logo.png"
           alt="Logo"
           class="w-full h-full object-cover object-center"
         />
-      </div>
+      </RouterLink>
       <button
         v-if="!auth"
         @click="loginModal = true"
@@ -16,12 +16,13 @@
       >
         შესვლა
       </button>
-      <button
+      <RouterLink
+        to="/blog/add"
         v-if="auth"
         class="text-white bg-[#5D37F3] px-5 py-2.5 rounded-lg"
       >
         ბლოგის დამატება
-      </button>
+      </RouterLink>
     </div>
   </div>
 </template>

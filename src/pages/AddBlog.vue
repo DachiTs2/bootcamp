@@ -229,7 +229,7 @@ const form = reactive({
   description: "",
   description4Symb: false,
   publish_date: "",
-  categories: [2, 3, 4],
+  categories: [1, 2],
   email: "",
   formValid: false,
 });

@@ -76,7 +76,8 @@
 <script setup>
 import { ref, watch } from "vue";
 import axios from "../helpers/axios";
-defineEmits(["close"]);
+
+const emit = defineEmits(["close"]);
 const email = ref("");
 const error = ref("");
 const loggedIn = ref(false);
@@ -99,7 +100,9 @@ const submit = async () => {
       }
     });
 };
+
 const login = () => {
   localStorage.setItem("login", JSON.stringify(true));
+  emit("close");
 };
 </script>

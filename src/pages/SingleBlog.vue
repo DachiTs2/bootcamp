@@ -23,7 +23,7 @@
       <div class="w-[45%] h-auto flex flex-col justify-start items-start">
         <div class="w-full h-[328px] rounded-xl overflow-hidden">
           <img
-            src="https://s3-alpha-sig.figma.com/img/f61f/fadf/53c6b0eca0d67f6b1b3b647378282151?Expires=1704067200&Signature=D~IE7J~nfhBNbWNmxpL2jI4s4FBja3z-d7R~yGX52uHbVaD2bOACDV4Lf8uQCWgmd8VC20kbjaz7JysvbjzbWykQpUmtTLINIFpnvqOE2zjFgSC-Ljm8xFUNJc7xKGDWjMfFuXtTQkQhnt0J4o2KdaO3pdxO72FszJNNDsJNi28yDbQ4a44L1jPWJvv8OszGQK4yqmukDDmvgbgCEBh1JpGharAXYboO0kJSaieNybXLNEvEzpMTMR1KvJVrL4v9fQUqRuXL2Ey~OPkg4XYgndg85STXT2eE60ICE1gdVS0mE6nSnG44ZDAjgfJyeoU0OdWzj3QSn~0x5pPY10-3kQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+            :src="blog?.image"
             alt="Image"
             class="w-full h-full object-cover object-center"
           />
@@ -103,24 +103,24 @@
           class="w-full h-[620px]"
           v-bind="settings"
         >
-          <SwiperSlide class="h-56 w-full flex justify-center items-center">
-            <BlogCard /> </SwiperSlide
-          ><SwiperSlide class="h-56 w-full flex justify-center items-center">
-            <BlogCard /> </SwiperSlide
-          ><SwiperSlide class="h-56 w-full flex justify-center items-center">
-            <BlogCard /> </SwiperSlide
-          ><SwiperSlide class="h-56 w-full flex justify-center items-center">
-            <BlogCard />
+          <SwiperSlide
+            v-for="blog in releated"
+            :key="blog.id"
+            class="h-56 w-full flex justify-center items-center"
+          >
+            <BlogCard :blog="blog" />
           </SwiperSlide>
         </Swiper>
       </div>
     </div>
   </div>
+  <button @click="getRelatedBlogs">click</button>
 </template>
 
 <script setup>
 import Navbar from "../components/Navbar.vue";
 import { Navigation } from "swiper/modules";
+
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 // Import Swiper styles
@@ -130,15 +130,30 @@ import BlogCard from "../components/BlogCard.vue";
 import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 import axios from "../helpers/axios";
+
 const isLastSlide = ref(false);
 const isFirstSlide = ref(true);
 
 const route = useRoute();
 const blog = ref();
+const releated = ref();
 
 onBeforeMount(async () => {
-  const { data } = await axios.get(`/blogs/${route.params.id}`);
-  blog.value = data;
+  const { data: singleBlog } = await axios.get(`/blogs/${route.params.id}`);
+  blog.value = singleBlog;
+  const { data } = await axios.get(`/blogs`);
+  const commonCategoryBlogs = data.data.filter((otherBlog) =>
+    otherBlog.categories.some((category) =>
+      blog.value.categories.some(
+        (blogCategory) => blogCategory.id === category.id
+      )
+    )
+  );
+
+  const releatedBlogs = commonCategoryBlogs.filter((releatedBlog) => {
+    return releatedBlog.id !== blog.value.id;
+  });
+  releated.value = releatedBlogs;
 });
 
 const settings = {
@@ -151,8 +166,11 @@ const settings = {
     nextEl: "#next-arrow",
   },
 };
+
 const slideChangeHandler = (swiper) => {
   isLastSlide.value = swiper.isEnd;
   isFirstSlide.value = swiper.isBeginning;
 };
+
+const getRelatedBlogs = async () => {};
 </script>
