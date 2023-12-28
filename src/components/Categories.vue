@@ -18,10 +18,20 @@
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
 import axios from "../helpers/axios";
+
+const emit = defineEmits(["select"]);
 const categories = ref();
 const activeCategory = ref();
+
+watch(
+  () => activeCategory.value,
+  () => {
+    emit("select", activeCategory.value);
+  }
+);
+
 onBeforeMount(async () => {
   const { data } = await axios.get("/categories");
   categories.value = data.data;
