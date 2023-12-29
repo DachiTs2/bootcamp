@@ -1,8 +1,4 @@
 <template>
-  <Navbar />
-  <Hero />
-  <Categories />
-  <BlogContainer />
   <RouterView />
 </template>
 

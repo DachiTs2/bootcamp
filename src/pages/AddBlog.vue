@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <div class="w-full h-auto flex justify-center items-center my-24">
+  <div class="w-full h-auto flex justify-center items-center py-24">
     <div class="w-5/6 h-auto flex flex-col justify-start items-center relative">
       <div
         @click="$router.back(-1)"

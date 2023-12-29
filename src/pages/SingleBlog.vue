@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <div class="w-full h-auto flex justify-center items-center my-24">
+  <div class="w-full h-auto flex justify-center items-center py-24">
     <div class="w-5/6 h-auto flex flex-col justify-start items-center relative">
       <div
         @click="$router.back(-1)"
@@ -52,6 +52,7 @@
         </p>
       </div>
       <div
+        v-if="releated.length > 0"
         class="w-full h-auto flex flex-col justify-start items-start mt-20 space-y-10"
       >
         <div class="w-full h-auto flex justify-between items-center">
@@ -112,9 +113,11 @@
           </SwiperSlide>
         </Swiper>
       </div>
+      <div v-else class="w-full h-96 mt-16 flex justify-center items-center">
+        <p class="text-2xl text-black">მსგავსი სტატიები ვერ მოიძებნა</p>
+      </div>
     </div>
   </div>
-  <button @click="getRelatedBlogs">click</button>
 </template>
 
 <script setup>
