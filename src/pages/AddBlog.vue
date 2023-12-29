@@ -141,7 +141,7 @@
             />
           </div>
           <div
-            class="w-1/2 h-auto flex flex-col justify-start items-start space-y-2"
+            class="w-1/2 h-20 flex flex-col justify-start items-start space-y-2"
           >
             <label class="font-medium text-sm text-black">კატეგორია *</label>
             <MultiselectInput
@@ -162,6 +162,9 @@
               type="email"
               class="w-full h-11 rounded-xl border-2 border-black/50 focus:border-[#5D37F3] outline-none duration-150 px-2"
             />
+            <p v-if="!form.emailValid" class="text-xs text-red-500">
+              * მეილი უნდა მთავრდებოდეს @redberry.ge-ით
+            </p>
           </div>
         </div>
         <div class="w-full h-10 flex justify-end items-center mt-10">
@@ -187,6 +190,9 @@ import { onBeforeMount, reactive, ref, watch } from "vue";
 import Navbar from "../components/Navbar.vue";
 import axios from "../helpers/axios";
 import MultiselectInput from "../components/MultiselectInput.vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const form = reactive({
   image: null,
@@ -202,6 +208,7 @@ const form = reactive({
   publish_date: "",
   categories: [],
   email: "",
+  emailValid: true,
   formValid: false,
 });
 const categories = ref(null);
@@ -232,7 +239,9 @@ const submit = async () => {
   formData.append("email", form.email);
   formData.append("categories", JSON.stringify(form.categories));
   const result = await axios.post("/blogs", formData);
-  console.log(result);
+  if (result.status === 204) {
+    router.push("/");
+  }
 };
 watch(
   () => form.author,
@@ -258,6 +267,16 @@ watch(
     }
   }
 );
+
+watch(
+  () => form.email,
+  () => {
+    form.email.slice(-12) === "@redberry.ge"
+      ? (form.emailValid = true)
+      : (form.emailValid = false);
+  }
+);
+
 watch(
   () => form.title,
   () => {
