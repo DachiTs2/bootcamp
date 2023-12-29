@@ -1,5 +1,6 @@
 <template>
   <Navbar />
+  <SuccessModal v-if="isSuccessful" />
   <div class="w-full h-auto flex justify-center items-center py-24">
     <div class="w-5/6 h-auto flex flex-col justify-start items-center relative">
       <div
@@ -191,6 +192,7 @@ import Navbar from "../components/Navbar.vue";
 import axios from "../helpers/axios";
 import MultiselectInput from "../components/MultiselectInput.vue";
 import { useRouter } from "vue-router";
+import SuccessModal from "../components/SuccessModal.vue";
 
 const router = useRouter();
 
@@ -212,6 +214,8 @@ const form = reactive({
   formValid: false,
 });
 const categories = ref(null);
+const isSuccessful = ref(false);
+
 onBeforeMount(async () => {
   const { data } = await axios.get("/categories");
   categories.value = data.data;
@@ -240,7 +244,7 @@ const submit = async () => {
   formData.append("categories", JSON.stringify(form.categories));
   const result = await axios.post("/blogs", formData);
   if (result.status === 204) {
-    router.push("/");
+    isSuccessful.value = true;
   }
 };
 watch(

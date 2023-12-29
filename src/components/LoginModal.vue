@@ -104,5 +104,6 @@ const submit = async () => {
 const login = () => {
   localStorage.setItem("login", JSON.stringify(true));
   emit("close");
+  window.location.href = "/";
 };
 </script>
