@@ -144,41 +144,10 @@
             class="w-1/2 h-auto flex flex-col justify-start items-start space-y-2"
           >
             <label class="font-medium text-sm text-black">კატეგორია *</label>
-            <div
-              @click="categoriesDropdown = !categoriesDropdown"
-              class="w-full h-11 border-2 outline-none duration-150 relative flex justify-start items-center px-4 whitespace-nowrap overflow-x-auto scroll-smooth no-scrollbar"
-              :class="
-                categoriesDropdown
-                  ? 'rounded-b-none rounded-xl border-[#5D37F3]'
-                  : 'rounded-xl border-black/50'
-              "
-            >
-              <div
-                v-for="category in form.categories"
-                :key="category.id"
-                @click="removeCategory(category.id)"
-                class="w-auto h-7 text-sm bg-yellow-500/40 text-yellow-500 flex justify-center items-center px-4 whitespace-nowrap rounded-3xl mr-2"
-              >
-                {{ category.title }}
-              </div>
-              <div
-                class="w-full h-40 bg-white border-2 absolute top-full left-0 duration-150 overflow-y-auto"
-                :class="
-                  categoriesDropdown
-                    ? 'h-40 border-[#5D37F3] opacity-100'
-                    : 'h-0 opacity-0'
-                "
-              >
-                <div
-                  v-for="category in categories"
-                  :key="category.id"
-                  class="w-full h-10 bg-slate-50 hover:bg-slate-100 duration-100 flex justify-start items-center px-4"
-                  @click="form.categories.push(category)"
-                >
-                  {{ category.title }}
-                </div>
-              </div>
-            </div>
+            <MultiselectInput
+              @select="addSelectedCategory"
+              @remove="removeCategory"
+            />
           </div>
         </div>
         <div
@@ -217,6 +186,8 @@
 import { onBeforeMount, reactive, ref, watch } from "vue";
 import Navbar from "../components/Navbar.vue";
 import axios from "../helpers/axios";
+import MultiselectInput from "../components/MultiselectInput.vue";
+
 const form = reactive({
   image: null,
   author: "",
@@ -229,7 +200,7 @@ const form = reactive({
   description: "",
   description4Symb: false,
   publish_date: "",
-  categories: [1, 2],
+  categories: [],
   email: "",
   formValid: false,
 });
@@ -241,6 +212,16 @@ onBeforeMount(async () => {
 const imageChangeHandler = (event) => {
   form.image = event.target.files[0];
 };
+
+const addSelectedCategory = (category) => {
+  form.categories.push(category.id);
+};
+const removeCategory = (category) => {
+  form.categories = form.categories.filter((c) => {
+    return c !== category.id;
+  });
+};
+
 const submit = async () => {
   const formData = new FormData();
   formData.append("image", form.image);
