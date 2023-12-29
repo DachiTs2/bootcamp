@@ -9,7 +9,7 @@
         :style="`background-color: ${category.background_color}80; color: ${category.text_color};`"
         :key="category.id"
         v-for="category in categories"
-        @click="activeCategory = category.id"
+        @click="clickHandler(category)"
       >
         {{ category.title }}
       </button>
@@ -36,4 +36,12 @@ onBeforeMount(async () => {
   const { data } = await axios.get("/categories");
   categories.value = data.data;
 });
+
+const clickHandler = (category) => {
+  if (activeCategory.value) {
+    activeCategory.value = null;
+  } else {
+    activeCategory.value = category.id;
+  }
+};
 </script>

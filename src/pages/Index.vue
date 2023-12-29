@@ -2,7 +2,7 @@
   <Navbar />
   <Hero />
   <Categories @select="setActiveCategory" />
-  <BlogContainer :blogs="filteredBlogs ?? blogs" />
+  <BlogContainer :blogs="filteredBlogs.length > 0 ? filteredBlogs : blogs" />
 </template>
 
 <script setup>
@@ -15,7 +15,7 @@ import axiosInstance from "../helpers/axios";
 
 const blogs = ref();
 const activeCategory = ref();
-const filteredBlogs = ref();
+const filteredBlogs = ref([]);
 const setActiveCategory = (id) => {
   activeCategory.value = id;
 };
